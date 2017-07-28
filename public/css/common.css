@@ -1,0 +1,69 @@
+.navbar-wrapper
+{
+    background-color: black;
+}
+.navbar-brand
+{
+    font-family: 'Lobster', cursive;
+}
+.footer-bottom
+{
+    font-family: 'Lobster', cursive;
+}
+body
+{
+    font-family: 'Open Sans', sans-serif;
+}
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    position: relative;
+    top:120px;
+}
+
+.center-text
+{
+    text-align: center;
+    font-weight: bold;
+    color: #196c4b;
+}
+.footer-bottom {
+    background-color: black;
+    min-height: 30px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+.copyright {
+    color: #fff;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 7px 0;
+}
+.design {
+    color: #fff;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 7px 0;
+    text-align: right;
+}
+.design a {
+    color: #fff;
+}
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    width: 25%;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+h2{
+    font-weight: bold;
+    color: #1f648b;
+}

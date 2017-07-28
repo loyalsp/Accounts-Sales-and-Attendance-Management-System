@@ -7,12 +7,20 @@
  */
 
 namespace App\Http\Controllers;
+use DateTime;
 
 
 class Auth extends Controller
 {
+    public function getDateTime()
+    {
+        return new DateTime('Asia/Karachi');
+    }
     public function getHome()
     {
-        return view('index');
+
+        $time = $this->getDateTime();
+        $time = $time->format('Gi');
+        return view('index',['time' => $time]);
     }
 }

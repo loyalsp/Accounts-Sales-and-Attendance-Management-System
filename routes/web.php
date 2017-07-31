@@ -11,11 +11,33 @@
 |
 */
 
-Route::group(['web' => 'middleware'],function (){
-
-    Route::get('/',[
-        'uses' => 'Auth@getHome',
+Route::group(['web' => 'middleware'], function () {
+/* ***************************************
+                Frontend routes
+ * ***************************************/
+    Route::get('/', [
+        'uses' => 'AuthController@getHome',
         'as' => 'index'
     ]);
 
+    Route::post('/employee-login', [
+        'uses' => 'AuthController@post_employee_login',
+        'as' => 'employee-login'
+    ]);
+    /* *************************************
+     *          Employee routes
+     * ************************************/
+    Route::group(['middleware' => 'auth'], function () {
+
+        Route::get('/dashboard', [
+            'uses' => 'AuthController@getDashboard',
+            'as' => 'employee.index'
+        ]);
+
+        Route::get('/logout', [
+            'uses' => 'AuthController@getLogout',
+            'as' => 'employee-logout'
+        ]);
+    });
 });
+

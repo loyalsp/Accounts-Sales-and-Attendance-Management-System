@@ -17,7 +17,7 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password','facebook_id'
+        'full_name', 'email', 'password',
     ];
 
     /**

@@ -1,4 +1,4 @@
-<div class="footer-bottom">
+<footer class="footer-bottom">
 
     <div class="container">
 
@@ -27,4 +27,4 @@
         </div>
 
     </div>
-</div>
+</footer>

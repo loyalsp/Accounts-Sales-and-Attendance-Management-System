@@ -51,7 +51,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
         if (!Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
-            return redirect()->back()->with(['fail' => 'sorry could not log in']);
+            return redirect()->back()->with(['fail' => 'Incorrect credentials']);
         }
         return redirect()->route('employee.index');
     }
@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function getLogout()
     {
         Auth::logout();
-        return redirect()->route('index')->with(['success' => 'You are logged out']);
+        return redirect()->route('index')->with(['success' => 'You are logged out now']);
     }
 
     /**

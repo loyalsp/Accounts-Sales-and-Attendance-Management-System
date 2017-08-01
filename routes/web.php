@@ -39,5 +39,11 @@ Route::group(['web' => 'middleware'], function () {
             'as' => 'employee-logout'
         ]);
     });
+
 });
+Route::get('login/facebook', [
+    'uses' =>'SocialController@redirectToProvider',
+    'as' => 'login-with-facebook'
+]);
+Route::get('login/facebook/callback', 'SocialController@handleProviderCallback');
 

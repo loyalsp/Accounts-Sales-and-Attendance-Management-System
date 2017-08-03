@@ -2,14 +2,17 @@
 
 namespace App;
 
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable;
 
-class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
+class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable,CanResetPasswordContract
 {
-    use Authenticatable;
+    use Authenticatable,CanResetPassword,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -31,4 +34,9 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
     protected $guarded = [
         'is_admin'
     ];
+
+    public function getPwdToken()
+    {
+        return $this->hasOne('App\PasswordReset');
+    }
 }

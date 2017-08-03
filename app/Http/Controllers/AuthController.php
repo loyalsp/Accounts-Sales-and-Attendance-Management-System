@@ -8,21 +8,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\AttendanceDao;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
-use App\User;
 use Illuminate\Http\Request;
+use App\Repositories\UserDao;
 
-
+/**
+ * Class AuthController
+ * @package App\Http\Controllers
+ */
 class AuthController extends Controller
 {
     /**
+     * @var UserDao
+     */
+    private $userDao;
+    private $attendanceDao;
+    /**
+     * AuthController constructor.
+     */
+     public function __construct(UserDao $userDao,AttendanceDao $attendanceDao)
+    {
+        $this->userDao = $userDao;
+        $this->attendanceDao = $attendanceDao;
+    }
+
+
+    /**
      * @return DateTime
      */
-    public function getDateTime()
+    public function current_time()
     {
-        return new DateTime('Asia/Karachi');
+        return $this->getDateTime();
     }
 
     /**
@@ -35,7 +53,7 @@ class AuthController extends Controller
         {
             return redirect()->route('employee.index');
         }
-        $time = $this->getDateTime();
+        $time = $this->current_time();
         $time = $time->format('Gi');
         return view('index', ['time' => $time]);
     }
@@ -53,7 +71,7 @@ class AuthController extends Controller
         if (!Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
             return redirect()->back()->with(['fail' => 'Incorrect credentials']);
         }
-        return redirect()->route('employee.index');
+        return redirect()->route('employee.index')->with(['success' => 'You are logged in now']);
     }
 
     /**
@@ -64,7 +82,9 @@ class AuthController extends Controller
         $user = $this->getUser();
         $first_name = $this->getFirstName($user);
         $user->first_name = $first_name;
-        return view('employee.index',['user' => $user]);
+        $current_date = $this->getCurrentDate();
+        $check_in_time = $this->attendanceDao->getTodayCheckIn($user,$current_date);
+        return view('employee.index',['user' => $user, 'check_in_time' => $check_in_time]);
     }
 
     /**
@@ -74,15 +94,6 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('index')->with(['success' => 'You are logged out now']);
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    private function getUser()
-    {
-        //getting authenticated user
-        return Auth::user();
     }
 
     /**

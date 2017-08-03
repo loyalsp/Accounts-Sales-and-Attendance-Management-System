@@ -25,6 +25,9 @@
             </form>
             <br>
             <a href="{{route('login-with-facebook')}}"><img id="fb-img" class="img-responsive" src="{{URL::to('images/fb-login.png')}}"> </a>
+            <a class="" href="password/reset" style=" padding-left:200px;">
+                Forgot You Password?
+            </a>
         </div>
     </div>
     @include('includes.footer')

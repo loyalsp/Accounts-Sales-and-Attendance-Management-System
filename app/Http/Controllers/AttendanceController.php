@@ -36,15 +36,17 @@ class AttendanceController extends Controller
         $record =$this->attendanceDao->getTodayCheckIn($user_id);
         if(is_null($record))
         {
-            $checked_id= $this->attendanceDao->createRecord(['user_id' => $user_id,
+            $checked_in= $this->attendanceDao->createRecord(['user_id' => $user_id,
 
                 'check_in' => $current_time]);
-            if($checked_id)
+            if($checked_in)
             {
                 return redirect()->route('employee.index')->with(['success' =>'
                 Check in at: '.$current_time]);
             }
         }
+        return redirect()->route('employee.index')->with(['fail' =>'
+               You have already Checked in']);
     }
 
     public function check_out()

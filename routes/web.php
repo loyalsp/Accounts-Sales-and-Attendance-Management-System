@@ -16,7 +16,7 @@ Route::group(['middleware' => ['web']], function () {
                     Frontend routes
      * ***************************************/
     Route::get('/', [
-        'uses' => 'AuthController@getHome',
+        'uses' => 'AuthController@getIndex',
         'as' => 'index'
     ]);
 
@@ -32,8 +32,8 @@ Route::group(['middleware' => ['web']], function () {
      * ************************************/
     Route::group(['middleware' => 'auth'], function () {
 
-        Route::get('/dashboard', [
-            'uses' => 'AuthController@getDashboard',
+        Route::get('/home', [
+            'uses' => 'AuthController@getHome',
             'as' => 'employee.index'
         ]);
 
@@ -44,6 +44,15 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('/employee/check-in', [
             'uses' => 'AttendanceController@check_in',
             'as' => 'check-in'
+        ]);
+
+        Route::get('/employee/check-out', [
+            'uses' => 'AttendanceController@check_out',
+            'as' => 'check-out'
+        ]);
+        Route::get('/employee/monthly/record', [
+            'uses' => 'AttendanceController@showCurrentMonthRecord',
+            'as' => 'employee.monthly-record'
         ]);
     });
 

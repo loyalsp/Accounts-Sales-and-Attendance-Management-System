@@ -46,7 +46,7 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function getHome()
+    public function getIndex()
     {
         $user = $this->getUser();
         if(!is_null($user))
@@ -77,14 +77,13 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getDashboard()
+    public function getHome ()
     {
         $user = $this->getUser();
         $first_name = $this->getFirstName($user);
         $user->first_name = $first_name;
-        $current_date = $this->getCurrentDate();
-        $check_in_time = $this->attendanceDao->getTodayCheckIn($user,$current_date);
-        return view('employee.index',['user' => $user, 'check_in_time' => $check_in_time]);
+        $attendance = $this->attendanceDao->getTodayCheckIn($user->id);
+        return view('employee.index',['user' => $user, 'attendance' => $attendance]);
     }
 
     /**
@@ -96,15 +95,4 @@ class AuthController extends Controller
         return redirect()->route('index')->with(['success' => 'You are logged out now']);
     }
 
-    /**
-     * @param $user
-     * @return string
-     */
-    private function getFirstName($user)
-    {
-        $full_name = $user->full_name;
-        $array = explode(' ',trim($full_name));
-        $first_name = ucfirst($array[0]);
-        return $first_name;
-    }
 }

@@ -1,0 +1,15 @@
+#employee-table
+{
+    border: 1px solid #888a85;
+    border-radius: 10px;
+    position: relative;
+    top:100px;
+    padding: 10px;
+}
+tr .center-text
+{
+    color: #0f0f0f;
+    font-weight: bold;
+    font-style: italic;
+    font-size: medium;
+}

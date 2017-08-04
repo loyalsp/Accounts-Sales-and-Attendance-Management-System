@@ -16,7 +16,7 @@ interface IRepository
     /*
      * This interface is intended to serve all database access operation
      * */
-    public function getTable($table);
+    public function getTable($tableName);
     public function createRecord(array $attributes);
     public function updateRecord($id, array $attributes);
     public function getAllRecords();

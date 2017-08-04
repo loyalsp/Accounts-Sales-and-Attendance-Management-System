@@ -46,12 +46,12 @@ abstract class CommonBehaviors implements IRepository
     }
 
     /**
-     * @param $table
+     * @param $tableName
      * @return mixed
      */
-    public function getTable($table)
+    public function getTable($tableName)
     {
-        return DB::table($table);
+        return DB::table($tableName);
     }
 
     /**

@@ -39,4 +39,9 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable,C
     {
         return $this->hasOne('App\PasswordReset');
     }
+
+    public function getAttendance()
+    {
+        return $this->hasMany('App\Attendance');
+    }
 }

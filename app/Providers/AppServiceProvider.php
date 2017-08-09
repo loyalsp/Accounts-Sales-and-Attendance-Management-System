@@ -6,6 +6,9 @@ use App\Repositories\AttendanceDao;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\IRepository;
 use App\Repositories\UserDao;
+use App\Repositories\SaleDao;
+use App\Repositories\StoreDao;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Schema::defaultStringLength(191);
     }
 
     /**
@@ -28,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(IRepository::class,UserDao::class);
         $this->app->singleton(IRepository::class,AttendanceDao::class);
+        $this->app->singleton(IRepository::class,SaleDao::class);
+        $this->app->singleton(IRepository::class,StoreDao::class);
     }
 }

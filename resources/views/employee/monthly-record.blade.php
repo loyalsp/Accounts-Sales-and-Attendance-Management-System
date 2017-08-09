@@ -1,15 +1,11 @@
-@extends('layouts.master')
+@extends('layouts.employee')
 @section('title')
-    Monthly Record
+    Dashboard
 @endsection
-@section('style')
-<link href="{{URL::to('css/employee.css')}}" rel="stylesheet">
-@endsection
-@section('content')
-    @include('includes.employee-navbar')
-    <div class="container">
-        @include('includes.live-watch')
-            @include('includes.info-box')
+@section('side-body')
+    @include('includes.info-box')
+    @include('includes.error-box')
+        <h1>Current Month Attendance Record</h1>
         <div id="employee-table" class="center-text">
             <table class="table table-striped">
                 <thead>
@@ -17,18 +13,21 @@
                     <th class="center-text">#</th>
                     <th class="center-text">Check in</th>
                     <th class="center-text">Check out</th>
+                    <th class="center-text">Day</th>
                     <th class="center-text">Leave</th>
-                    <th class="center-text">Date</th>
+                    <th class="center-text">Working hours</th>
                 </tr>
                 </thead>
-                @foreach($records as $record)
+                @foreach($attendances as $attendance)
                 <tbody>
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$record->check_in}}</td>
-                    <td>{{$record->check_out}}</td>
-                    <td>{{$record->leave_type}}</td>
-                    <td>{{$record->created_at}}</td>
+                    <td>{{$attendance->check_in}}</td>
+                    <td>{{$attendance->check_out}}</td>
+                    <td>{{$attendance->day}}</td>
+                    <td>{{$attendance->leave_type}}</td>
+                    <td>{{$attendance->working_hours}}</td>
+
                 </tr>
                 </tbody>
                     @endforeach

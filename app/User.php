@@ -35,13 +35,9 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable,C
         'is_admin'
     ];
 
-    public function getPwdToken()
-    {
-        return $this->hasOne('App\PasswordReset');
-    }
-
-    public function getAttendance()
+    public function attendance()
     {
         return $this->hasMany('App\Attendance');
     }
+
 }

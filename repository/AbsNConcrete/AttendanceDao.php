@@ -9,7 +9,9 @@
 namespace App\Repositories;
 
 
+use App\Attendance;
 use App\Repositories\AbsNConcrete\CommonBehaviors;
+use DB;
 
 /**
  * Class AttendanceDao
@@ -17,6 +19,11 @@ use App\Repositories\AbsNConcrete\CommonBehaviors;
  */
 class AttendanceDao extends CommonBehaviors
 {
+    /**
+     * @var
+     */
+    protected $model;
+
     /**
      * @return string
      */
@@ -29,22 +36,26 @@ class AttendanceDao extends CommonBehaviors
      * @param $user_id
      * @return mixed
      */
-    public function getMonthlyRecord($user_id)
+    public function getCurrentMonthAttendance($user_id)
     {
-        return $this->getTable('attendances')->where('user_id', $user_id)->
-        whereMonth('created_at', date('m'))
-            ->whereYear('created_at', '=', date('Y'))->get();
+        return $this->model->where('user_id', $user_id)->
+            whereMonth('created_at',date('m'))->
+            whereYear('created_at',date('Y'))->get();
     }
+
 
     /**
      * @param $user_id
-     * @return mixed
+     * @return mixed if no row found it will return null, if found then it will return an object, else false
      */
-    public function getTodayCheckIn($user_id)
+    //function will get an attendance record of today against the user
+    public function getTodayAttendance($user_id)
     {
-        return $this->getTable('attendances')->where('user_id', $user_id)->
-        whereMonth('created_at', date('m'))->
-        whereYear('created_at', date('Y'))->
-        whereDay('created_at',date('d'))->first();
+        return $this->model->where('user_id', $user_id)
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->whereDay('created_at', date('d'))
+            ->first();
     }
+
 }

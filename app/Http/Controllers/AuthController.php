@@ -9,6 +9,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\AttendanceDao;
+use App\Repositories\StoreDao;
+use App\Store;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -23,25 +25,23 @@ class AuthController extends Controller
     /**
      * @var UserDao
      */
-    private $userDao;
     private $attendanceDao;
+    private $storeDao;
     /**
      * AuthController constructor.
      */
-     public function __construct(UserDao $userDao,AttendanceDao $attendanceDao)
+     public function __construct(AttendanceDao $attendanceDao,StoreDao $storeDao)
     {
-        $this->userDao = $userDao;
+
         $this->attendanceDao = $attendanceDao;
+        $this->storeDao = $storeDao;
     }
 
 
     /**
      * @return DateTime
      */
-    public function current_time()
-    {
-        return $this->getDateTime();
-    }
+
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -53,8 +53,7 @@ class AuthController extends Controller
         {
             return redirect()->route('employee.index');
         }
-        $time = $this->current_time();
-        $time = $time->format('Gi');
+        $time = $this->getCurrentTime('Gi');
         return view('index', ['time' => $time]);
     }
 
@@ -79,11 +78,16 @@ class AuthController extends Controller
      */
     public function getHome ()
     {
+        $stores = $this->storeDao->getAllRecords();
         $user = $this->getUser();
         $first_name = $this->getFirstName($user);
         $user->first_name = $first_name;
-        $attendance = $this->attendanceDao->getTodayCheckIn($user->id);
-        return view('employee.index',['user' => $user, 'attendance' => $attendance]);
+        $current_date = $this->getCurrentDate();
+        $today_attendance = $this->attendanceDao->getTodayAttendance($user->id,$current_date);
+        return view('employee.index',['user' => $user,
+            'attendance' => $today_attendance,
+            'stores' => $stores,]);
+
     }
 
     /**

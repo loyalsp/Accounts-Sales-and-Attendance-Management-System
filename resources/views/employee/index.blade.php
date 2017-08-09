@@ -1,46 +1,39 @@
-@extends('layouts.master')
+@extends('layouts.employee')
 @section('title')
-    Home
-@endsection
-@section('style')
+    Dashboard
+    @endsection
+@section('side-body')
+    @include('includes.info-box')
+    @include('includes.error-box')
+    <div class="col-md-5">
+        <div class="panel panel-default center-text">
+            <div class="panel-heading">Check In/Check out</div>
+            <div class="panel-body">
+                @if(is_null($attendance))
+                    <form method="post" action="{{route('post-check-in')}}" class="form-horizontal">
+                        <select name="store_id">
+                            <option>Please select a store</option>
+                                @foreach($stores as $store)
+                                    <option value="{{$store->id}}">
+                                        {{$store->store_name}}
+                                    </option>
+                                @endforeach
+                        </select>
 
-@endsection
-@section('content')
-    @include('includes.employee-navbar')
-    <div class="container">
-        @include('includes.live-watch')
-        <div class="center-text">
-            @include('includes.info-box')
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Check In/Out</div>
-                        <div class="panel-body">
-                            @if(is_null($attendance))
-                                <a href="{{route('check-in')}}">
-                                    <button class="btn btn-primary">Check in</button>
-                                </a>
-                            @elseif(is_null($attendance->check_out))
-                                <a href="{{route('check-out')}}">
-                                    <button class="btn btn-primary">Check out</button>
-                                </a>
-                                <br>
-                                Checked in :&nbsp; {{$attendance->check_in}}
-                            @else Checked out at: {{$attendance->check_out}}
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-7">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Activity Record</div>
+                        <input type="hidden" value="{{Session::token()}}" name="_token">
+                        <input class="btn btn-primary" type="submit" value="Check in">
+                    </form>
+                @elseif(is_null($attendance->check_out))
+                    <a href="{{route('employee.sale-today')}}">
+                        <button class="btn btn-primary">Enter Sale to Check out</button>
+                    </a>
 
-                        <a href="{{route('employee.monthly-record')}}"><button type="submit" class="btn btn-primary">Get This Month Record</button></a>
-                    </div>
-                </div>
+                    <br>
+                    Checked in :&nbsp; {{$attendance->check_in}}
+                @else Checked out : {{$attendance->check_out}}
+                @endif
+
             </div>
         </div>
     </div>
-    </div>
-    @include('includes.footer')
-@endsection
+    @endsection

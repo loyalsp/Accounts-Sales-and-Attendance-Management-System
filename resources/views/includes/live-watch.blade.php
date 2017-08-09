@@ -16,8 +16,9 @@
         return i;
     }
 </script>
-<div class="card center-text">
+<div class="card center-text" style="width:140px;">
 
         <h2 id="txt"></h2>
 
 </div>
+<br>  <br>  <br>  <br>

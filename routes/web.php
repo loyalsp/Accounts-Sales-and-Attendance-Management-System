@@ -31,31 +31,43 @@ Route::group(['middleware' => ['web']], function () {
      *          Employee routes
      * ************************************/
     Route::group(['middleware' => 'auth'], function () {
+        Route::group(['prefix' => 'employee'], function () {
+            Route::get('/home', [
+                'uses' => 'AuthController@getHome',
+                'as' => 'employee.index'
+            ]);
 
-        Route::get('/home', [
-            'uses' => 'AuthController@getHome',
-            'as' => 'employee.index'
-        ]);
+            Route::get('/logout', [
+                'uses' => 'AuthController@getLogout',
+                'as' => 'employee-logout'
+            ]);
+            Route::post('/check-in', [
+                'uses' => 'AttendanceController@post_check_in',
+                'as' => 'post-check-in'
+            ]);
 
-        Route::get('/logout', [
-            'uses' => 'AuthController@getLogout',
-            'as' => 'employee-logout'
-        ]);
-        Route::get('/employee/check-in', [
-            'uses' => 'AttendanceController@check_in',
-            'as' => 'check-in'
-        ]);
 
-        Route::get('/employee/check-out', [
-            'uses' => 'AttendanceController@check_out',
-            'as' => 'check-out'
-        ]);
-        Route::get('/employee/monthly/record', [
-            'uses' => 'AttendanceController@showCurrentMonthRecord',
-            'as' => 'employee.monthly-record'
-        ]);
+            Route::get('/check-out', [
+                'uses' => 'AttendanceController@getCheckOut',
+                'as' => 'employee.sale-today'
+            ]);
+
+            Route::post('/sale-today', [
+                'uses' => 'SaleController@createSaleNCheckOut',
+                'as' => 'post-employee.sale-today'
+            ]);
+
+            Route::get('/monthly/sale', [
+                'uses' => 'SaleController@showCurrentMonthSale',
+                'as' => 'employee.monthly-sale-record'
+            ]);
+            Route::get('/monthly/attendance', [
+                'uses' => 'AttendanceController@showCurrentMonthAttendance',
+                'as' => 'employee.monthly-attendance-record'
+            ]);
+
+        });
     });
-
 });
 
 //Socialite Routes

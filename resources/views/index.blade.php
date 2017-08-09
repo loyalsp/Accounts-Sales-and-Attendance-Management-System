@@ -4,7 +4,8 @@
 @endsection
 @section('content')
     @include('includes.frontend-navbar')
-    <div class="container">
+    <div class="container-fluid">
+        <div class="side-body">
         @include('includes.time-message-box')
         <div class="center" id="login-background">
             <h3 class="center-text">Accounts Sales and Attendance Management System</h3>
@@ -30,5 +31,6 @@
             </a>
         </div>
     </div>
+        </div>
     @include('includes.footer')
 @endsection

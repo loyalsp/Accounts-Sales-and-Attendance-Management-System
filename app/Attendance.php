@@ -11,9 +11,15 @@ class Attendance extends Model
         'check_in',
         'check_out',
         'leave_type',
+        'working_hours',
+        'day',
+        'store_id',
+        //'current_date',
+        //'current_month'
     ];
-    public function getUser()
+
+    public function user()
     {
-        return $this->belongsTo('App\User','user_id');
+        return $this->belongsTo('App\User');
     }
 }

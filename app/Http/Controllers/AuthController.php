@@ -10,7 +10,6 @@ namespace App\Http\Controllers;
 
 use App\Repositories\AttendanceDao;
 use App\Repositories\StoreDao;
-use App\Store;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -82,8 +81,8 @@ class AuthController extends Controller
         $user = $this->getUser();
         $first_name = $this->getFirstName($user);
         $user->first_name = $first_name;
-        $current_date = $this->getCurrentDate();
-        $today_attendance = $this->attendanceDao->getTodayAttendance($user->id,$current_date);
+       // $current_date = $this->getCurrentDate();
+        $today_attendance = $this->attendanceDao->userTodayAttendance($user->id);
         return view('employee.index',['user' => $user,
             'attendance' => $today_attendance,
             'stores' => $stores,]);

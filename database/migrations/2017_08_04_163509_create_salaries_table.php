@@ -16,7 +16,7 @@ class CreateSalariesTable extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->double('hourly_rate',4,2);
+            //$table->double('hourly_rate',4,2);
             $table->double('salary_of_month',6,4);
             $table->string('status')->default(false);
             $table->foreign('user_id')->references('id')->on('users');

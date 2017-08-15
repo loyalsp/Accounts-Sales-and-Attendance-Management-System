@@ -23,9 +23,8 @@ class CreateAttendancesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('store_id')->unsigned()->nullable();
-           // $table->string('current_date');
             //$table->string('current_month');
-            $table->string('day')->default($this->getToday());
+            $table->string('current_date');
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
             $table->string('leave_type')->nullable();

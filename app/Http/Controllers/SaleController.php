@@ -24,7 +24,7 @@ class SaleController extends Controller
         $this->saleDao = $saleDao;
         $this->attendanceDao = $attendanceDao;
     }
-
+/***************Employee Functionalities***************/
     public function createSaleNCheckOut(Request $request)
     {
         $this->validate($request, [
@@ -33,7 +33,7 @@ class SaleController extends Controller
             'user_id' => 'required'
         ]);
         $user_id = $this->getUser()->id;
-        $today_attendance = $this->attendanceDao->getTodayAttendance($user_id);
+        $today_attendance = $this->attendanceDao->userTodayAttendance($user_id);
         if(is_null($today_attendance) || !is_null($today_attendance->check_out))
         {
             return redirect()->route('employee.index')->with(['fail' => 'it seems that you
@@ -50,7 +50,7 @@ class SaleController extends Controller
 
         $user = $this->getUser();
         $user->first_name = $this->getFirstName($user);
-        $sales = $this->saleDao->getCurrentMonthSale($user->id);
+        $sales = $this->saleDao->userCurrentMonthSale($user->id)->paginate(3);
         if (is_object($sales)) {
 
             return view('employee.monthly-sale-record', ['sales' => $sales, 'user' => $user]);
@@ -64,4 +64,5 @@ class SaleController extends Controller
         $attendanceCont = new AttendanceController($this->attendanceDao);
         $attendanceCont->checkOut($attendance);
     }
+    /******************Admin functionalities*************/
 }

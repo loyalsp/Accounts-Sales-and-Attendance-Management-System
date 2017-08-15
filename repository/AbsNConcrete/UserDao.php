@@ -15,4 +15,5 @@ class UserDao extends CommonBehaviors
     {
      return 'App\User';
     }
+    
 }

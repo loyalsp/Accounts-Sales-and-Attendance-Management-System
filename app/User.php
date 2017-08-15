@@ -20,7 +20,7 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable,C
      * @var array
      */
     protected $fillable = [
-        'full_name', 'email', 'password',
+        'full_name', 'email', 'password','hourly_rate'
     ];
 
     /**
@@ -39,5 +39,8 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable,C
     {
         return $this->hasMany('App\Attendance');
     }
-
+    public function sale()
+    {
+        return $this->hasMany('App\Sale');
+    }
 }

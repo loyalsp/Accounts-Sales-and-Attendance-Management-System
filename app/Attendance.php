@@ -14,7 +14,7 @@ class Attendance extends Model
         'working_hours',
         'day',
         'store_id',
-        //'current_date',
+        'current_date',
         //'current_month'
     ];
 
@@ -22,4 +22,5 @@ class Attendance extends Model
     {
         return $this->belongsTo('App\User');
     }
+    
 }

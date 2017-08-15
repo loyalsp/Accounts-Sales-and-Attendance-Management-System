@@ -36,11 +36,11 @@ class AttendanceDao extends CommonBehaviors
      * @param $user_id
      * @return mixed
      */
-    public function getCurrentMonthAttendance($user_id)
+    public function userCurrentMonthAttendance($user_id)
     {
-        return $this->model->where('user_id', $user_id)->
-            whereMonth('created_at',date('m'))->
-            whereYear('created_at',date('Y'))->get();
+        return $this->getResultByCurrentMonth()
+            ->where('user_id', $user_id)
+            ->get();
     }
 
 
@@ -49,13 +49,10 @@ class AttendanceDao extends CommonBehaviors
      * @return mixed if no row found it will return null, if found then it will return an object, else false
      */
     //function will get an attendance record of today against the user
-    public function getTodayAttendance($user_id)
+    public function userTodayAttendance($user_id)
     {
-        return $this->model->where('user_id', $user_id)
-            ->whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
-            ->whereDay('created_at', date('d'))
+        return $this->getResultByToday()
+            ->where('user_id', $user_id)
             ->first();
     }
-
 }

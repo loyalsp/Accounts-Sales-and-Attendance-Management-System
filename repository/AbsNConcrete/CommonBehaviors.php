@@ -126,6 +126,35 @@ abstract class CommonBehaviors implements IRepository
         return $this->model->update($attributes);
     }
 
+    /**
+     * @return mixed
+     */
+    protected function getResultByToday()
+    {
+        return $this->model
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->whereDay('created_at', date('d'));
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getResultByCurrentMonth()
+    {
+        return $this->model
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'));
+    }
+
+    /**
+     * @param $column
+     * @return mixed
+     */
+    public function getTodayMaxValues($column)
+    {
+        return $this->getResultByToday()->orderBy($column, 'desc');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Builder

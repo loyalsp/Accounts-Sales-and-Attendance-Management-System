@@ -37,14 +37,14 @@ class AttendanceController extends Controller
         ]);
         $user_id = $this->getUser()->id;
         $current_time = $this->getCurrentTime(); //format will be 'H:i:s' 00:00:00
-        //$current_date = $this->getCurrentDate(); format will be 'y-d-m' 0000-00-00
+        $current_date = $this->getCurrentDate('D M j');
         //$current_month = $this->getCurrentDate('y-m'); getting year and month only 00-00
-        $today_attendance = $this->attendanceDao->getTodayAttendance($user_id);
+        $today_attendance = $this->attendanceDao->userTodayAttendance($user_id);
         if (is_null($today_attendance)) {
             $checked_in = $this->attendanceDao->createRecord([
                 'user_id' => $user_id,
                 'store_id' => $request['store_id'],
-                //'current_date' => $current_date,
+                'current_date' => $current_date,
                 'check_in' => $current_time]);
             if ($checked_in) {
                 return redirect()->route('employee.index')->with(['success' => '
@@ -76,7 +76,7 @@ class AttendanceController extends Controller
 
         $user = $this->getUser();
         $user->first_name = $this->getFirstName($user);
-        $attendances = $this->attendanceDao->getCurrentMonthAttendance($user->id);
+        $attendances = $this->attendanceDao->userCurrentMonthAttendance($user->id);
         if (!is_null($attendances)) {
             return view('employee.monthly-record', ['attendances' => $attendances, 'user' => $user]);
         }
@@ -86,7 +86,7 @@ class AttendanceController extends Controller
     public function getCheckOut()
     {
         $user = $this->getUser();
-        $today_attendance = $this->attendanceDao->getTodayAttendance($user->id);
+        $today_attendance = $this->attendanceDao->userTodayAttendance($user->id);
         $user->first_name = $this->getFirstName($user);
         if (is_object($today_attendance))
         {

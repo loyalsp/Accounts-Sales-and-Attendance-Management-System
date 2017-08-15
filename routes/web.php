@@ -21,11 +21,15 @@ Route::group(['middleware' => ['web']], function () {
     ]);
 
 
+
     Route::post('/employee-login', [
         'uses' => 'AuthController@post_employee_login',
         'as' => 'employee-login'
     ]);
-
+    Route::get('/admin', [
+        'uses' => 'AdminController@getAdmin',
+        'as' => 'layouts.admin'
+    ]);
 
     /* *************************************
      *          Employee routes

@@ -17,4 +17,9 @@ protected $fillable =[
     {
         return $this->belongsTo('App\Store','store_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

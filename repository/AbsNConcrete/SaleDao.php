@@ -19,16 +19,11 @@ class SaleDao extends CommonBehaviors
         return 'App\Sale';
     }
 
-  /*  public function getCurrentMonthSale($user_id, $current_month)
+    public function userCurrentMonthSale($user_id)
     {
-        return $this->model->getMonthlyRecord($user_id, $current_month);
-    }*/
-
-    public function getCurrentMonthSale($user_id)
-    {
-        return $this->model->where('user_id', $user_id)->
-        whereMonth('created_at', date('m'))->
-        whereYear('created_at', date('Y'))
-            ->paginate(1);
+        return $this->getResultByCurrentMonth()
+            ->where('user_id', $user_id);
     }
+
+
 }

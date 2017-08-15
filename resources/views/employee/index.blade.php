@@ -11,8 +11,9 @@
             <div class="panel-body">
                 @if(is_null($attendance))
                     <form method="post" action="{{route('post-check-in')}}" class="form-horizontal">
+                        <label for="store_id">Please select a store: </label>
                         <select name="store_id">
-                            <option>Please select a store</option>
+<option></option>
                                 @foreach($stores as $store)
                                     <option value="{{$store->id}}">
                                         {{$store->store_name}}

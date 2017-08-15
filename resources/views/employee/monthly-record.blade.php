@@ -24,7 +24,7 @@
                     <td>{{$loop->iteration}}</td>
                     <td>{{$attendance->check_in}}</td>
                     <td>{{$attendance->check_out}}</td>
-                    <td>{{$attendance->day}}</td>
+                    <td>{{$attendance->current_date}}</td>
                     <td>{{$attendance->leave_type}}</td>
                     <td>{{$attendance->working_hours}}</td>
 

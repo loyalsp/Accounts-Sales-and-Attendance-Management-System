@@ -14,15 +14,18 @@
         <!-- uncomment code for absolute positioning tweek see top comment in css -->
         <!-- <div class="absolute-wrapper"> </div> -->
         <!-- Menu -->
+        <div></div>
     @include('includes.employee-sidebar')
     <!-- Main Content -->
         <div class="container">
             <div class="side-body">
-                @include('includes.live-watch')
+   @include('includes.live-watch')
+   @include('includes.info-box')
+   @include('includes.error-box')
    @yield('side-body')
                 <!-- side body end-->
             </div>
         </div>
     </div>
-    @include('includes.footer')
+   {{-- @include('includes.footer')--}}
 @endsection

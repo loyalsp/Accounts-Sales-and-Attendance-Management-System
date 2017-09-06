@@ -9,8 +9,6 @@
 namespace App\Repositories\Contracts;
 
 
-use Illuminate\Support\Facades\DB;
-
 interface IRepository
 {
     /*

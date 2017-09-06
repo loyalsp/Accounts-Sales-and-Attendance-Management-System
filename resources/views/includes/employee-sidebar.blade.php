@@ -15,7 +15,7 @@
         </div>
 
         <!-- Main Menu -->
-        <div class="side-menu-container">
+        <div class="side-menu">
             <ul class="nav navbar-nav">
                 <li><a href="{{route('employee.index')}}">&nbsp;&nbsp;<span class="glyphicon glyphicon-home"></span>Home</a></li>
                 <li><a href="{{route('employee.monthly-sale-record')}}">&nbsp;&nbsp;&nbsp;<i class="fa fa-usd"></i>&nbsp;&nbsp;&nbsp;Current Month Sale Record</a></li>

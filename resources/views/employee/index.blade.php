@@ -3,8 +3,6 @@
     Dashboard
     @endsection
 @section('side-body')
-    @include('includes.info-box')
-    @include('includes.error-box')
     <div class="col-md-5">
         <div class="panel panel-default center-text">
             <div class="panel-heading">Check In/Check out</div>

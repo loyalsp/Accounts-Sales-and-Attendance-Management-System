@@ -12,7 +12,6 @@ use App\Repositories\Contracts\IRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\DB;
-use DateTime;
 
 /**
  * Class CommonBehaviors
@@ -92,7 +91,8 @@ abstract class CommonBehaviors implements IRepository
     public function deleteRecordByAtt($column, $value)
     {
         //return true if success
-        return $this->model->getRecordByAttribute($column, $value)->delete();
+        $this->model = $this->getRecordByAttribute($column,$value);
+        return $this->model->delete();
     }
 
     /**
@@ -125,37 +125,7 @@ abstract class CommonBehaviors implements IRepository
         $this->model = $this->getRecordById($id);
         return $this->model->update($attributes);
     }
-
-    /**
-     * @return mixed
-     */
-    protected function getResultByToday()
-    {
-        return $this->model
-            ->whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
-            ->whereDay('created_at', date('d'));
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getResultByCurrentMonth()
-    {
-        return $this->model
-            ->whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'));
-    }
-
-    /**
-     * @param $column
-     * @return mixed
-     */
-    public function getTodayMaxValues($column)
-    {
-        return $this->getResultByToday()->orderBy($column, 'desc');
-    }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      * @throws RepositoryException

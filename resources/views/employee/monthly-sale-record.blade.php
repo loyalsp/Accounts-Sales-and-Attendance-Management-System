@@ -1,11 +1,9 @@
 @extends('layouts.employee')
 @section('title')
-    Dashboard
+    Monthly Record
 @endsection
 @section('side-body')
-    @include('includes.info-box')
-    @include('includes.error-box')
-        <h1>Current Month Sale Record</h1>
+        <h2>Current Month Sale Record</h2>
         <div id="employee-table" class="center-text">
             <table class="table table-striped">
                 <thead>
@@ -31,6 +29,5 @@
             </table>
         </div>
     <div class="center-text" style="position:relative;top:100px;">{{$sales->links()}}</div>
-    </div>
-    </div>
+
 @endsection

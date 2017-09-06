@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\Attendance;
 use App\Repositories\AbsNConcrete\CommonBehaviors;
 use DB;
+use Illuminate\Container\Container;
 
 /**
  * Class AttendanceDao
@@ -22,7 +23,16 @@ class AttendanceDao extends CommonBehaviors
     /**
      * @var
      */
-    protected $model;
+    private $attendance;
+
+    /**
+     * AttendanceDao constructor.
+     * @param $model
+     */
+    public function __construct(Attendance $attendance)
+    {   parent::__construct(new Container());
+        $this->attendance = $attendance;
+    }
 
     /**
      * @return string
@@ -38,7 +48,8 @@ class AttendanceDao extends CommonBehaviors
      */
     public function userCurrentMonthAttendance($user_id)
     {
-        return $this->getResultByCurrentMonth()
+        return $this->attendance
+            ->getRecordsByCurrentMonth()
             ->where('user_id', $user_id)
             ->get();
     }
@@ -49,10 +60,36 @@ class AttendanceDao extends CommonBehaviors
      * @return mixed if no row found it will return null, if found then it will return an object, else false
      */
     //function will get an attendance record of today against the user
-    public function userTodayAttendance($user_id)
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function getUserTodayAttendance($user_id)
     {
-        return $this->getResultByToday()
+        return $this->attendance
+            ->getRecordsByCurrentDate()
             ->where('user_id', $user_id)
             ->first();
+    }
+
+    /**
+     * @param $column
+     * @param $order
+     * @param $limit int
+     * @return mixed
+     */
+    public function getAttendancesHavingMaxHour($column, $limit)
+    {
+        if(is_null($limit))
+        {
+            return $this->attendance
+                ->getRecordsByCurrentMonth()
+                ->orderBy($column,'desc')
+                ->get();
+        }
+        return $this->attendance
+            ->getRecordsByCurrentMonth()
+            ->orderBy($column,'desc')
+            ->take($limit)->get();
     }
 }

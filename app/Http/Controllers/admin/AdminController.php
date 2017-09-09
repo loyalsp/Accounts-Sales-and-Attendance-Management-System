@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Sale;
+use App\User;
 use ConsoleTVs\Charts\Facades\Charts;
 use App\Repositories\SaleDao;
 use App\Repositories\AttendanceDao;
+
+
 
 
 class AdminController extends Controller
@@ -22,19 +25,29 @@ class AdminController extends Controller
         $this->saleDao = $saleDao;
         $this->attendanceDao = $attendanceDao;
     }
-
-    public function getAdmin()
+//This function will set and send the chart into admin.index page
+    public function getAdminIndex()
     {
-
-        $sales = $this->saleDao->getTodayMaxValues('sale_today')->take(5)->get();
+        $limit = 5;
+        //This call will get 5 records with in the current month from the table that have maximum 5 values in give column
+        $sales = $this->saleDao->getMaxSalesOfCurrentMonth('sale_today',$limit);
         $sales_chart = 'Atleast 5 sales needed to render the chart';
         if (count($sales) == 5) {
-            $saleAndNames = $this->getLabelsAndValues($sales);
-            $sales_chart = $this->getChart($saleAndNames[0], $saleAndNames[1], 'Top 5 Sales of the Day', 'Sale in $ :');
-            $attendances = $this->attendanceDao->getTodayMaxValues('working_hours')->take(5)->get();
-            $hoursAndName = $this->getLabelsAndValues($attendances);
-            $attendance_chart = $this->getChart($hoursAndName[0], $hoursAndName[1], 'Top 5 Working hours of the Day', 'Hours', 'line');
-            return view('admin.index', ['sale_chart' => $sales_chart, 'attendance_chart' => $attendance_chart]);
+            $salesNEmployees = $this->getLabelsAndValuesFor($sales); //setting up the labels and values for the chart
+            $sales_chart = $this->getChart($salesNEmployees[0], $salesNEmployees[1],
+                'Top 5 Sales of the current Month By the Employees', 'Sale in US $');
+            //will get 5 records with in the current month
+            $attendances = $this->attendanceDao->getAttendancesHavingMaxHour('working_hours',$limit);
+            $hoursNEmployees = $this->getLabelsAndValuesFor($attendances);
+            $attendance_chart = $this->getChart($hoursNEmployees[0], $hoursNEmployees[1],
+                'Highest 5 Working hours of the current Month by Employees', 'Hours', 'line');
+            $current_day_sale = $this->saleDao->getTodayAllSales();
+            return view('admin.index', [
+                'sale_chart' => $sales_chart,
+                'attendance_chart' => $attendance_chart,
+                'sales' => $current_day_sale
+            ]);
+
         }
         return view('admin.index', ['sale_chart' => $sales_chart]);
     }
@@ -51,12 +64,12 @@ class AdminController extends Controller
             ->dimensions(0, 500);
     }
 
-    private function getLabelsAndValues($vars)
+    private function getLabelsAndValuesFor($vars)
     {
 
         $labels = array();
         $values = array();
-        $labelsAndValues = array();
+        $labelsAndValues = array();//it will be multidimensional array. its job is to hold $labels and $values arrays
         foreach ($vars as $var)
         {
             if ($var instanceof Sale)
@@ -67,7 +80,6 @@ class AdminController extends Controller
             {
                 $value = $var->working_hours;
                 array_push($values, $value);
-                array_push($values, $value);
             }
             array_push($labels, $var->user->full_name);
         }
@@ -75,4 +87,5 @@ class AdminController extends Controller
         return $labelsAndValues;
 
     }
+
 }

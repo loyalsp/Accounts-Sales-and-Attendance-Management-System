@@ -9,7 +9,7 @@
 @endsection
 
 @section('side-body')
-    <div class="col-sm-3 col-md-3">
+    <div class="col-sm-4 col-md-4">
         @if(!is_string($sale_chart))
             {!! $sale_chart->render() !!}
         @else
@@ -20,26 +20,52 @@
             </section>
         @endif
     </div>
-    <div class="col-sm-2 col-md-2">
-        <form method="post" action="{{route('admin.sale-record')}}">
-            start date<input type="date" name="date_from">
-            <br>
-            end date<input type="date" name="date_to">
-            <input type="hidden" value="{{Session::token()}}" name="_token">
-            <br>
-
-            <select name="user_id">
-                <option value="">All Sales</option>
-            @foreach($users as $user)
-                <option value="{{$user->id}}">{{$user->full_name}}</option>
-                @endforeach
-            </select>
-            <input type="submit" value="Submit">
-        </form>
-        </div>
-    <div class="col-sm-4 col-md-4">
+    <div class="col-sm-5 col-md-5">
         @if(!is_string($sale_chart))
             {!! $attendance_chart->render() !!}
         @endif
     </div>
+    @if(isset($sales))
+        <div class="col-sm-9 col-md-9" style="float: right;">
+            <hr>
+            <div id="admin-table" class="center-text">
+                <h2>All Sales of today</h2>
+                @if(!is_null($sales))
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="center-text">#</th>
+                            <th class="center-text">Sale</th>
+                            <th class="center-text">Store Name</th>
+                            <th class="center-text">Store Location</th>
+                            <th class="center-text">Employee Name</th>
+                            <th class="center-text">Date</th>
+                        </tr>
+                        </thead>
+                        <?php
+                        $total_sale = 0;
+                        ?>
+                        @foreach($sales as $sale)
+                            <?php
+                            $total_sale = $total_sale + $sale->sale_today
+                            ?>
+                            <tbody>
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$sale->sale_today}} $</td>
+                                <td>{{$sale->getStore->store_name}}</td>
+                                <td>{{$sale->getStore->location}}</td>
+                                <td>{{$sale->user->full_name}}</td>
+                                <td>{{$sale->created_at}}</td>
+                            </tr>
+                            </tbody>
+                        @endforeach
+                    </table>
+                @endif
+                Total Sale of the day: {{$total_sale}} $
+                <br>
+            </div>
+        </div>
+    @endif
+
 @endsection

@@ -92,16 +92,11 @@ class SaleDao extends CommonBehaviors
      * @return mixed
      */
 
-    public function getMaxSalesOfCurrentMonth($column,$limit = null)
+    public function getMaxSalesOfCurrentMonth($limit)
 {
-    if(is_null($limit))
-    {
-        return $this->sale->getRecordsByCurrentMonth()
-            ->orderBy($column,'desc')
-            ->get();
-    }
+
     return $this->sale->getRecordsByCurrentMonth()
-        ->orderBy($column,'desc')
+        ->orderBy('sale_today','desc')
         ->take($limit)
         ->get();
 }
@@ -114,6 +109,13 @@ class SaleDao extends CommonBehaviors
     {
         //sum is built in method of a model
         return $this->sale->sum($column);
+    }
+
+    public function getStoreSale($fromDate, $toDate, $store_id)
+    {
+        return $this->sale->getRecords($fromDate, $toDate)
+            ->where('store_id', $store_id)
+            ->get();
     }
 
 }

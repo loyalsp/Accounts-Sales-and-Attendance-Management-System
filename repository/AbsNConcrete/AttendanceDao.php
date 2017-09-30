@@ -11,7 +11,6 @@ namespace App\Repositories;
 
 use App\Attendance;
 use App\Repositories\AbsNConcrete\CommonBehaviors;
-use DB;
 use Illuminate\Container\Container;
 
 /**
@@ -54,6 +53,14 @@ class AttendanceDao extends CommonBehaviors
             ->get();
     }
 
+/*    public function getCurrentMonthHours($user_id)
+    {
+        return $this->attendance
+            ->getRecordsByCurrentMonth()
+            ->where('user_id', $user_id)
+            ->sum('working_hours');
+    }*/
+
 
     /**
      * @param $user_id
@@ -78,18 +85,32 @@ class AttendanceDao extends CommonBehaviors
      * @param $limit int
      * @return mixed
      */
-    public function getAttendancesHavingMaxHour($column, $limit)
+    public function getAttendancesHavingMaxHour($limit)
     {
-        if(is_null($limit))
-        {
-            return $this->attendance
-                ->getRecordsByCurrentMonth()
-                ->orderBy($column,'desc')
-                ->get();
-        }
+
         return $this->attendance
             ->getRecordsByCurrentMonth()
-            ->orderBy($column,'desc')
+            ->orderBy('working_hours','desc')
             ->take($limit)->get();
+    }
+
+    public function getAllAttendancesByCurrentDate()
+    {
+        return $this->attendance->getRecordsByCurrentDate()
+            ->get();
+    }
+
+    public function getAttendance($fromDate, $toDate, $user_id = null)
+    {
+            return $this->attendance->getRecords($fromDate, $toDate)
+                ->where('user_id', $user_id)
+                ->get();
+    }
+
+    public function getWorkingHour($fromDate,$toDate,$user_id)
+    {
+        return $this->attendance->getRecords($fromDate, $toDate)
+            ->where('user_id',$user_id)
+            ->sum('working_hours');
     }
 }

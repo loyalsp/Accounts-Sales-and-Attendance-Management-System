@@ -3,6 +3,7 @@
     Dashboard
     @endsection
 @section('side-body')
+    <h2>Hello! {{$user->full_name}}</h2>
     <div class="col-md-5">
         <div class="panel panel-default center-text">
             <div class="panel-heading">Check In/Check out</div>

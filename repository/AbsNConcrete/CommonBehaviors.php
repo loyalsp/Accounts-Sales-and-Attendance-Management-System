@@ -12,6 +12,7 @@ use App\Repositories\Contracts\IRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 /**
  * Class CommonBehaviors
@@ -135,8 +136,8 @@ abstract class CommonBehaviors implements IRepository
         $model = $this->app->make($this->model());
 
         if (!$model instanceof Model)
-            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+            throw new Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
 
-        return $this->model = $model->newQuery();
+        return $this->model = $model;
     }
 }

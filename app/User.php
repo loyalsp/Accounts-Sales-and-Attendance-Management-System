@@ -43,4 +43,13 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable,C
     {
         return $this->hasMany('App\Sale');
     }
+    public function personal_information()
+    {
+        return $this->hasOne('App\PersonalInformation');
+    }
+
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
 }

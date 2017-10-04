@@ -1,3 +1,4 @@
+<div id="side-bar">
 <div class="col-sm-3 col-md-3">
     <div class="panel-group" id="accordion">
         <div class="panel panel-default">
@@ -7,7 +8,7 @@
                             </span>Employee</a>
                 </h4>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
+            <div id="collapseOne" class="panel-collapse collapse">
                 <div class="panel-body">
                     <table class="table">
                         <tr>
@@ -47,12 +48,12 @@
                     <table class="table">
                         <tr>
                             <td>
-                                <a href="#">Daily sale Record</a> <span class="label label-success">$ 320</span>
+                                <a href="{{route('admin.store-sale')}}">Get sale against a store</a> <span class="label label-success">$ 320</span>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <a href="#">Date to Date sale</a>
+                                <a href="{{route('admin.index')}}">Sales Record of Employees</a>
                             </td>
                         </tr>
                         <tr>
@@ -90,7 +91,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
-                            </span>Reports</a>
+                            </span>Attendance</a>
                 </h4>
             </div>
             <div id="collapseFour" class="panel-collapse collapse">
@@ -98,22 +99,12 @@
                     <table class="table">
                         <tr>
                             <td>
-                                <span class="glyphicon glyphicon-usd"></span><a href="#">Sales</a>
+                                <span class="glyphicon glyphicon-usd"></span><a href="{{route('admin.attendance-record')}}">Attendance Record</a>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span class="glyphicon glyphicon-user"></span><a href="#">Customers</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="glyphicon glyphicon-tasks"></span><a href="#">Products</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="glyphicon glyphicon-shopping-cart"></span><a href="#">Shopping Cart</a>
+                                <span class="glyphicon glyphicon-user"></span><a href="#"></a>
                             </td>
                         </tr>
                     </table>
@@ -123,15 +114,27 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a  href="#"><span class="glyphicon glyphicon-file">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><span class="glyphicon glyphicon-file">
                             </span>Reports</a>
                 </h4>
             </div>
-            <div id="collapseFour" class="panel-collapse collapse">
+            <div id="collapseFive" class="panel-collapse collapse">
                 <div class="panel-body">
-
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <span class="glyphicon glyphicon-usd"></span><a href="{{route('admin.attendance-record')}}">Attendance Record</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="glyphicon glyphicon-user"></span><a href="#"></a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+    </div>

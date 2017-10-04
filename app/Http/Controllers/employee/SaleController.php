@@ -11,7 +11,6 @@ namespace App\Http\Controllers;
 use App\Repositories\AttendanceDao;
 use App\Repositories\SaleDao;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
 {
@@ -24,8 +23,9 @@ class SaleController extends Controller
         $this->saleDao = $saleDao;
         $this->attendanceDao = $attendanceDao;
     }
-/***************Employee Functionalities***************/
-    public function createSaleNCheckOut(Request $request)
+
+    /***************Employee Functionalities***************/
+    public function postSaleNCheckOut(Request $request)
     {
         $this->validate($request, [
             'sale_today' => 'numeric|min:1',
@@ -33,36 +33,42 @@ class SaleController extends Controller
             'user_id' => 'required'
         ]);
         $user_id = $this->getUser()->id;
-        $today_attendance = $this->attendanceDao->userTodayAttendance($user_id);
-        if(is_null($today_attendance) || !is_null($today_attendance->check_out))
+        $today_attendance = $this->attendanceDao->getUserTodayAttendance($user_id);
+        if (is_null($today_attendance) || !is_null($today_attendance->check_out))
         {
             return redirect()->route('employee.index')->with(['fail' => 'it seems that you
-        have already checked out or not checked_id']);
+        have already checked out or not checked in']);
         }
-        $this->checkOutUser($today_attendance);
+        $this->checkOut($today_attendance);
         $this->saleDao->createRecord($request->all());
-        return redirect()->route('employee.index')->with(['success'=> 'You have checked out now']);
+      /*  $user = User::find($user_id);
+        $sale = new Sale();
+        $sale->store_id = $request['store_id'];
+        $sale->sale_today = $request['sale_today'];
+        $user->sale()->save($sale);*/
+        return redirect()->route('employee.index')->with(['success' => 'You have checked out now']);
 
     }
 
-    public function showCurrentMonthSale()
+    public function showUserCurrentMonthSale()
     {
 
         $user = $this->getUser();
         $user->first_name = $this->getFirstName($user);
-        $sales = $this->saleDao->userCurrentMonthSale($user->id)->paginate(3);
-        if (is_object($sales)) {
+        $sales = $this->saleDao->userCurrentMonthSale($user->id);
+        if (!is_null($sales))
+        {
 
             return view('employee.monthly-sale-record', ['sales' => $sales, 'user' => $user]);
 
         }
         return redirect()->route('employee.index')->with(['fail' => 'monthly record not found']);
     }
-    
-    private function checkOutUser($attendance)
+
+    private function checkOut($attendance)
     {
         $attendanceCont = new AttendanceController($this->attendanceDao);
-        $attendanceCont->checkOut($attendance);
+        $attendanceCont->checkOutUser($attendance);
     }
-    /******************Admin functionalities*************/
+
 }

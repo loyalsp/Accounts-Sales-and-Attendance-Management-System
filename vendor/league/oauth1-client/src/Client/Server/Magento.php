@@ -20,7 +20,7 @@ use League\OAuth1\Client\Credentials\TokenCredentials;
 class Magento extends Server
 {
     /**
-     * Admin url.
+     * admin url.
      *
      * @var string
      */

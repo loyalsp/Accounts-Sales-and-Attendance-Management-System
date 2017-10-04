@@ -26,10 +26,11 @@ class AuthController extends Controller
      */
     private $attendanceDao;
     private $storeDao;
+
     /**
      * AuthController constructor.
      */
-     public function __construct(AttendanceDao $attendanceDao,StoreDao $storeDao)
+    public function __construct(AttendanceDao $attendanceDao, StoreDao $storeDao)
     {
 
         $this->attendanceDao = $attendanceDao;
@@ -48,7 +49,7 @@ class AuthController extends Controller
     public function getIndex()
     {
         $user = $this->getUser();
-        if(!is_null($user))
+        if (!is_null($user))
         {
             return redirect()->route('employee.index');
         }
@@ -62,11 +63,12 @@ class AuthController extends Controller
      */
     public function post_employee_login(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'email' => 'required',
             'password' => 'required'
         ]);
-        if (!Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
+        if (!Auth::attempt($request->only('email','password')))
+        {
             return redirect()->back()->with(['fail' => 'Incorrect credentials']);
         }
         return redirect()->route('employee.index')->with(['success' => 'You are logged in now']);
@@ -75,17 +77,19 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getHome ()
+    public function getHome()
     {
         $stores = $this->storeDao->getAllRecords();
         $user = $this->getUser();
         $first_name = $this->getFirstName($user);
         $user->first_name = $first_name;
-       // $current_date = $this->getCurrentDate();
-        $today_attendance = $this->attendanceDao->userTodayAttendance($user->id);
-        return view('employee.index',['user' => $user,
+        // $current_date = $this->getCurrentDate();
+        $today_attendance = $this->attendanceDao->getUserTodayAttendance($user->id);
+        return view('employee.index', [
+            'user' => $user,
             'attendance' => $today_attendance,
-            'stores' => $stores,]);
+            'stores' => $stores
+        ]);
 
     }
 

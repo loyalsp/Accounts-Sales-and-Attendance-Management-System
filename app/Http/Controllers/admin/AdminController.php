@@ -7,8 +7,8 @@ use App\User;
 use ConsoleTVs\Charts\Facades\Charts;
 use App\Repositories\SaleDao;
 use App\Repositories\AttendanceDao;
-
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class AdminController extends Controller
@@ -30,14 +30,14 @@ class AdminController extends Controller
     {
         $limit = 5;
         //This call will get 5 records with in the current month from the table that have maximum 5 values in give column
-        $sales = $this->saleDao->getMaxSalesOfCurrentMonth('sale_today',$limit);
+        $sales = $this->saleDao->getMaxSalesOfCurrentMonth($limit);
         $sales_chart = 'Atleast 5 sales needed to render the chart';
         if (count($sales) == 5) {
             $salesNEmployees = $this->getLabelsAndValuesFor($sales); //setting up the labels and values for the chart
             $sales_chart = $this->getChart($salesNEmployees[0], $salesNEmployees[1],
                 'Top 5 Sales of the current Month By the Employees', 'Sale in US $');
             //will get 5 records with in the current month
-            $attendances = $this->attendanceDao->getAttendancesHavingMaxHour('working_hours',$limit);
+            $attendances = $this->attendanceDao->getAttendancesHavingMaxHour($limit);
             $hoursNEmployees = $this->getLabelsAndValuesFor($attendances);
             $attendance_chart = $this->getChart($hoursNEmployees[0], $hoursNEmployees[1],
                 'Highest 5 Working hours of the current Month by Employees', 'Hours', 'line');
@@ -88,4 +88,26 @@ class AdminController extends Controller
 
     }
 
+    public function getAdminLogin()
+    {
+        return view ('admin.login');
+    }
+    public function postAdminLogin(Request $request)
+    {
+        $this->validate($request,[
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+        if(Auth::attempt($request->only('email','password')))
+        {
+            return redirect()->route('admin.index');
+        }
+        return redirect()->back()->with(['fail' => 'invalid login']);
+    }
+
+    public function get_logOut()
+    {
+        Auth::logout();
+        return redirect()->route('admin.login')->with(['success' => 'Logged out']);
+    }
 }

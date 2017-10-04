@@ -19,22 +19,96 @@ Route::group(['middleware' => ['web']], function () {
         'uses' => 'AuthController@getIndex',
         'as' => 'index'
     ]);
-
-
+    Route::get('/admin-logout', [
+        'uses' => 'AdminController@get_logOut',
+        'as' => 'admin-logout'
+    ]);
 
     Route::post('/employee-login', [
         'uses' => 'AuthController@post_employee_login',
         'as' => 'employee-login'
     ]);
-    Route::get('/admin', [
-        'uses' => 'AdminController@getAdmin',
-        'as' => 'layouts.admin'
+    Route::get('/admin-login', [
+        'uses' => 'AdminController@getAdminLogin',
+        'as' => 'admin.login'
     ]);
+
+    Route::post('/post-admin-login', [
+        'uses' => 'AdminController@postAdminLogin',
+        'as' => 'post-admin-login'
+    ]);
+
+
+    Route::group(['middleware' => 'admin'], function ()
+    {
+/*  Route::get('/admin/login', [
+            'uses' => 'AuthController@post_employee_login',
+            'as' => 'employee-login'
+        ]);*/
+        Route::get('/admin/dashboard', [
+            'uses' => 'AdminController@getAdminIndex',
+            'as' => 'admin.index'
+        ]);
+
+        Route::get('/create_salary', [
+            'uses' => 'AdminSalaryController@create_salary',
+            'as' => 'create-salary'
+        ]);
+
+        Route::get('/current_month_salaries', [
+            'uses' => 'AdminSalaryController@show_current_month_salaries',
+            'as' => 'admin.current-month-salaries'
+        ]);
+
+        Route::get('/salary-paid/{user_id}', [
+            'uses' => 'AdminSalaryController@salary_paid',
+            'as' => 'update-salary-status'
+        ]);
+
+        Route::group(['prefix' => 'admin/employee'], function ()
+        {
+            Route::get('/sale-record', [
+                'uses' => 'AdminSaleController@getAllSaleByCurrentDatePage',
+                'as' => 'admin.sale-record'
+            ]);
+
+            Route::post('/sale/record', [
+                'uses' => 'AdminSaleController@showUserAllSaleByDates',
+                'as' => 'show-sale-by-dates'
+            ]);
+
+            Route::get('/store-sale', [
+                'uses' => 'AdminSaleController@getSaleByStorePage',
+                'as' => 'admin.store-sale'
+            ]);
+
+            Route::post('/store/sale', [
+                'uses' => 'AdminSaleController@showStoreSaleByDates',
+                'as' => 'show-store-sale'
+            ]);
+
+            Route::get('/attendance-record', [
+                'uses' => 'AdminAttendanceController@getAttendancePage',
+                'as' => 'admin.attendance-record'
+            ]);
+
+            Route::post('/attendance/record', [
+                'uses' => 'AdminAttendanceController@showUserAttendancesByDates',
+                'as' => 'show.attendance-record'
+            ]);
+            Route::get('/admin-logout', [
+                'uses' => 'AdminController@get_logOut',
+                'as' => 'admin-logout'
+            ]);
+
+        });
+    });
 
     /* *************************************
      *          Employee routes
      * ************************************/
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => 'user'], function () {
+
         Route::group(['prefix' => 'employee'], function () {
             Route::get('/home', [
                 'uses' => 'AuthController@getHome',
@@ -52,20 +126,20 @@ Route::group(['middleware' => ['web']], function () {
 
 
             Route::get('/check-out', [
-                'uses' => 'AttendanceController@getCheckOut',
+                'uses' => 'AttendanceController@getCheckOutPage',
                 'as' => 'employee.sale-today'
             ]);
 
             Route::post('/sale-today', [
-                'uses' => 'SaleController@createSaleNCheckOut',
+                'uses' => 'SaleController@postSaleNCheckOut',
                 'as' => 'post-employee.sale-today'
             ]);
 
             Route::get('/monthly/sale', [
-                'uses' => 'SaleController@showCurrentMonthSale',
+                'uses' => 'SaleController@showUserCurrentMonthSale',
                 'as' => 'employee.monthly-sale-record'
             ]);
-            Route::get('/monthly/attendance', [
+            Route::get('/monthly-attendance', [
                 'uses' => 'AttendanceController@showCurrentMonthAttendance',
                 'as' => 'employee.monthly-attendance-record'
             ]);

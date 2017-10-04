@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Repositories\AbsNConcrete\CommonBehaviors;
+use App\Repositories\Contracts\ISaleRepository;
 use App\Sale;
 use Illuminate\Container\Container;
 
@@ -16,7 +17,7 @@ use Illuminate\Container\Container;
  * Class SaleDao
  * @package App\Repositories
  */
-class SaleDao extends CommonBehaviors
+class SaleDao extends CommonBehaviors implements ISaleRepository
 {
 
     /**

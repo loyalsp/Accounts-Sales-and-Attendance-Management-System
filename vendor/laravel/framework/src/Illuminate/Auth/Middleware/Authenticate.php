@@ -4,8 +4,7 @@ namespace Illuminate\Auth\Middleware;
 
 use Closure;
 use Illuminate\Auth\AuthenticationException;
-//use Illuminate\Contracts\Auth\Factory as Auth;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Auth\Factory as Auth;
 
 class Authenticate
 {
@@ -37,26 +36,9 @@ class Authenticate
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-/*    public function handle($request, Closure $next, ...$guards)
+    public function handle($request, Closure $next, ...$guards)
     {
         $this->authenticate($guards);
-
-        return $next($request);
-    }*/
-
-    public function handle($request, Closure $next, $guard = null)
-    {
-        if (Auth::guard($guard)->guest())
-        {
-            if ($request->ajax())
-            {
-                return response('Unauthorized.', 401);
-            }
-            else
-            {
-                return redirect()->route('index');
-            }
-        }
 
         return $next($request);
     }

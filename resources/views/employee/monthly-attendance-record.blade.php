@@ -5,7 +5,7 @@
 @section('side-body')
     @include('includes.info-box')
     @include('includes.error-box')
-        <h1>Current Month Attendance Record</h1>
+        <h2>Current Month Attendance Record</h2>
         <div id="employee-table" class="center-text">
             <table class="table table-striped">
                 <thead>
